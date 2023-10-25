@@ -1,0 +1,48 @@
+DATALOADER:
+  TRAIN_X:
+    BATCH_SIZE: 4
+  TEST:
+    BATCH_SIZE: 100
+  NUM_WORKERS: 8
+
+INPUT:
+  SIZE: (224, 224)
+  INTERPOLATION: "bicubic"
+  PIXEL_MEAN: [0.48145466, 0.4578275, 0.40821073]
+  PIXEL_STD: [0.26862954, 0.26130258, 0.27577711]
+  TRANSFORMS: ["random_resized_crop", "random_flip", "normalize"]
+
+OPTIM:
+  NAME: "sgd"
+  LR: 0.0025
+  MAX_EPOCH: 20
+  LR_SCHEDULER: "cosine"
+  WARMUP_EPOCH: 1
+  WARMUP_TYPE: "constant"
+  WARMUP_CONS_LR: 1e-5
+
+TRAIN:
+  PRINT_FREQ: 20
+#  CHECKPOINT_FREQ: 5
+
+#TEST:
+#  FINAL_MODEL: best_val
+#  NO_TEST: False
+
+MODEL:
+  BACKBONE:
+    NAME: "ViT-B/16"
+
+TRAINER:
+  MMP:
+    N_CTX: 2
+    CTX_INIT: "a photo of a"   #\ta nice photo of \ta large picture of \ta small photo of a \ta nice sketch of a"   #"\t a doodle of a \t a bright photo of a \t a sketch of a \t a tattoo of a \t a drawing of a \t a painting of the \t a drawing of the"
+    PREC: "fp16"
+    TEXT_PROMPT_DEPTH: 9
+    VISION_PROMPT_DEPTH: 9
+    TEXT_PROMPT_NUMBER: 4
+    VISION_PROMPT_NUMBER: 4
+    HIERARCHICAL: True
+    USECT: False
+#    HIERARCHICAL: False
+#    USECT: True
